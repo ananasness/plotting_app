@@ -11,7 +11,7 @@ class PlotData {
 }
 
 class PlotDataForm extends StatefulWidget {
-  final void Function(PlotData) onFormSubmitted;
+  final void Function(PlotData, bool) onFormSubmitted;
   final void Function() onError;
 
   const PlotDataForm({Key key, this.onFormSubmitted, this.onError})
@@ -26,6 +26,7 @@ class _PlotDataFormState extends State<PlotDataForm> {
   TextEditingController _controller;
   TextEditingController _minController;
   TextEditingController _maxController;
+  bool _checkboxValue = false;
   String errorMessage;
 
   void initState() {
@@ -95,6 +96,16 @@ class _PlotDataFormState extends State<PlotDataForm> {
             Text("}"),
           ],
         ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Checkbox(
+              value: _checkboxValue,
+              onChanged: (bool value) {
+                setState(() {
+                  _checkboxValue = value;
+                });
+              }),
+          Text("Use WolframAlpha for plotting")
+        ]),
         RaisedButton(child: Text("Plot"), onPressed: onPlotButtonClick),
         if (errorMessage != null)
           Text(errorMessage, style: TextStyle(color: Colors.red, fontSize: 14)),
@@ -139,11 +150,13 @@ class _PlotDataFormState extends State<PlotDataForm> {
       return "Something went wrong. Please try again";
     }
 
-    widget.onFormSubmitted(PlotData(
-        expression: exp,
-        expString: _controller.text,
-        min: minVal,
-        max: maxVal));
+    widget.onFormSubmitted(
+        PlotData(
+            expression: exp,
+            expString: _controller.text,
+            min: minVal,
+            max: maxVal),
+        _checkboxValue);
     return null;
   }
 }
