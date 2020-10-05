@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plotting_app/plot_data_form.dart';
+import 'package:plotting_app/plot_widget.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,7 +40,14 @@ class _HomePageState extends State<HomePage> {
           PlotDataForm(
             onFormSubmitted: (PlotData plotData) {
               setState(() {
-                plotWidget = Text("The plot is here!");
+                plotWidget = PlotWidget(
+                  data: plotData,
+                );
+              });
+            },
+            onError: () {
+              setState(() {
+                plotWidget = null;
               });
             },
           ),

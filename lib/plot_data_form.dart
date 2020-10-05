@@ -12,8 +12,10 @@ class PlotData {
 
 class PlotDataForm extends StatefulWidget {
   final void Function(PlotData) onFormSubmitted;
+  final void Function() onError;
 
-  const PlotDataForm({Key key, this.onFormSubmitted}) : super(key: key);
+  const PlotDataForm({Key key, this.onFormSubmitted, this.onError})
+      : super(key: key);
 
   @override
   _PlotDataFormState createState() => _PlotDataFormState();
@@ -104,6 +106,9 @@ class _PlotDataFormState extends State<PlotDataForm> {
     setState(() {
       this.errorMessage = tryToSubmitForm();
     });
+    if (this.errorMessage != null) {
+      widget.onError();
+    }
     FocusScope.of(context).unfocus();
   }
 
