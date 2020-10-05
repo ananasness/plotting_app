@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plotting_app/plot_data_form.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,11 +25,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Widget plotWidget;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Plotting App"),
+      ),
+      body: Column(
+        children: [
+          PlotDataForm(
+            onFormSubmitted: (PlotData plotData) {
+              setState(() {
+                plotWidget = Text("The plot is here!");
+              });
+            },
+          ),
+          if (plotWidget != null) plotWidget
+        ],
       ),
     );
   }
