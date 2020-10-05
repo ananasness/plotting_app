@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:string_validator/string_validator.dart';
 
 enum TokenTypeName {
@@ -10,6 +12,8 @@ enum TokenTypeName {
   VAR,
   OPEN_BRACE,
   CLOSE_BRACE,
+  POW,
+  SQRT
 }
 
 class Token {
@@ -62,6 +66,8 @@ final minusOperator = BinOperator(TokenTypeName.MINUS, 1, (a, b) => a - b);
 final unMinusOperator = UnOperator(TokenTypeName.UN_MINUS, 3, (a) => -a);
 final multiOperator = BinOperator(TokenTypeName.MULTI, 2, (a, b) => a * b);
 final divOperator = BinOperator(TokenTypeName.DIV, 2, (a, b) => a / b);
+final sqrtOperator = UnOperator(TokenTypeName.SQRT, 3, (a) => sqrt(a));
+final powOperator = BinOperator(TokenTypeName.POW, 4, (a, b) => pow(a, b));
 
 class Parser {
   static final operators = {
@@ -72,6 +78,8 @@ class Parser {
     TokenTypeName.DIV: divOperator,
     TokenTypeName.OPEN_BRACE: Token(TokenTypeName.OPEN_BRACE, false),
     TokenTypeName.CLOSE_BRACE: Token(TokenTypeName.CLOSE_BRACE, false),
+    TokenTypeName.POW: powOperator,
+    TokenTypeName.SQRT: sqrtOperator,
   };
 
   static final keys2type = {
@@ -81,6 +89,8 @@ class Parser {
     "/": TokenTypeName.DIV,
     "(": TokenTypeName.OPEN_BRACE,
     ")": TokenTypeName.CLOSE_BRACE,
+    "^": TokenTypeName.POW,
+    "sqrt": TokenTypeName.SQRT,
   };
 
   List<Token> _extractTokens(String input) {

@@ -15,7 +15,7 @@ void main() {
     }
   }
 
-  test('Parser.parse', () async {
+  test('Test parse method', () async {
     final testData =
         json.decode(await File('test/parser_test_data.json').readAsString());
     final values = testData["values"];
